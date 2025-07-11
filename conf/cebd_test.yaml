@@ -1,0 +1,47 @@
+##### hydra
+hydra:
+    run:
+      dir: ./outputs/${exp_name}/${status}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+    sweep:
+      dir: ./outputs/${exp_name}/${status}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+      subdir: ${hydra.job.override_dirname}
+
+##### dir
+exp_name: code_dev/BDNeRV_RC  # experiment name
+tester_name: cebd_tester      # tester name
+status: test                  # run status
+checkpoint1: /opt/data/private/czw/207/BDINR-master2-3/best-da6000/code_dev/BDNeRV_RC/train/2025-05-21_14-20-45/checkpoints/checkpoint-epoch2496.pth # loading checkpoint ${hydra:runtime.cwd}
+checkpoint2: /opt/data/private/czw/207/BDINR-master2/best-xiao6000/code_dev/BDNeRV_RC/train/2025-05-21_14-29-23/checkpoints/model_best.pth
+outputs_dir: outputs/
+
+##### run
+gpus: [0]             # GPU used, Warning: Only one GPU is supported for 'test' now
+num_workers: 2        # number of cpu worker
+save_img: true       # save the reconstructed images
+
+# params
+frame_n: 1
+sigma_range: [0,0]
+trainer:
+  epochs: 100
+
+##### metrics
+metrics:
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: similarity
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: mse
+  # - _target_: srcs.metric.metric_iqa.IQA_Metric
+  #   metric_name: psnr
+  # - _target_: srcs.metric.metric_iqa.IQA_Metric
+  #   metric_name: ssim
+  # - _target_: srcs.metric.metric_iqa.IQA_Metric
+  #   metric_name: lpips
+
+##### data&nets
+defaults:
+  - data: vid_test_data
+  - network: cebd
+  - override hydra/job_logging : custom
+  - override hydra/hydra_logging: colorlog
+  - _self_

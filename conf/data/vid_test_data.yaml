@@ -1,0 +1,14 @@
+# @package test_data_loader
+_target_: srcs.data_loader._my_video_data_loaders.get_data_loaders
+data_dir_val: /opt/data/private/czw/207/BDINR-master2-2/dataset-da6000 copy/val3  # video
+data_dir_train: /opt/data/private/czw/207/BDINR-master2-2/dataset-da6000 copy/val3  # video
+frame_num: ${frame_n}
+batch_size: 1
+patch_size: 80
+tform_op:
+status: ${status}
+shuffle: False
+num_workers: ${num_workers}
+pin_memory: True
+prefetch_factor: 2
+all2CPU: False

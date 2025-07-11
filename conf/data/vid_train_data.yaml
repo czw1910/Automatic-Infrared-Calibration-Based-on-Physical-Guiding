@@ -1,0 +1,15 @@
+# @package data_loader
+_target_: srcs.data_loader._my_video_data_loaders.get_data_loaders
+data_dir_train: /opt/data/private/czw/207/BDINR-master2-3/dataset-xiao6000/train3  # video
+data_dir_val: /opt/data/private/czw/207/BDINR-master2-3/dataset-xiao6000/val3  # video
+frame_num: ${frame_n}
+batch_size: 1
+patch_size: False
+tform_op: 'flip'
+# tform_op: 'all'
+status: 'train'
+shuffle: true
+num_workers: ${num_workers}
+pin_memory: true
+prefetch_factor: 1
+all2CPU: false
